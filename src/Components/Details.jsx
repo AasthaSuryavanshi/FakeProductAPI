@@ -1,7 +1,30 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import Loadingdetails from './Loadingdetails';
 
 const Details = () => {
-  return (
+    const [product, setproduct] = useState(null)
+    const { id } = useParams();
+
+
+    const getsingleproduct = async () =>{
+        try {
+            const {data} = await axios.get(`/products/${id}`)
+            console.log(data);
+            setproduct(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+      getsingleproduct();
+    
+    }, [])
+    
+
+  return  product ? (
     <div className=' w-[100vw] h-[100vh] bg-zinc-800 flex items-center justify-center'>
 
         <div className="details-container w-[70%] h-[80%] bg-white flex items-center justify-center rounded-2xl cursor-pointer shadow-none hover:shadow-lg shadow-transparent hover:shadow-white/40">
@@ -26,7 +49,7 @@ const Details = () => {
         </div>
 
     </div>
-  )
+  ) : <Loadingdetails/>
 }
 
 export default Details

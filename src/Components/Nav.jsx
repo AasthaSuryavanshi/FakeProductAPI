@@ -3,7 +3,7 @@ import React from 'react'
 const Nav = () => {
   return (
     <div>
-        <div className="nav w-[20vw] h-[100vh] bg-zinc-700 text-white flex items-center justify-start flex-col py-[5vh]">
+        <div className="nav w-[20vw] h-[100vh] bg-zinc-800/90 text-white flex items-center justify-start flex-col py-[5vh]">
         <a href="/create">
         <button 
         className=' px-5 rounded-lg py-1 text-zinc-200 bg-zinc-600 cursor-pointer hover:bg-zinc-500 shadow shadow-zinc-200 mb-10'>
