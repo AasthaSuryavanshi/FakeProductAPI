@@ -1,12 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Nav from './Nav'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { productContext } from '../utils/Context'
 import Loading from './Loading'
+import axios from '../utils/axios'
 
 const Home = () => {
 
     const [products] = useContext(productContext)
+    const {search} = useLocation();
+
+  const category = decodeURIComponent(search.split("=")[1]);
+  console.log(category);
+
+  const [filteredProducts, setfilteredProducts] = useState(null)
+
+
+  const getCategoryProducts = async ()=>{
+    try {
+      const {data} = await axios.get(`/products/category/${category}`)
+      setfilteredProducts(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    if(!filteredProducts || category =="undefined") setfilteredProducts(products)
+    if (category != "undefined") getCategoryProducts()
+  },[category,products])
 
     
     return products ?  (
@@ -18,7 +40,7 @@ const Home = () => {
         <div className="main-container w-[80vw] h-[100vh]  bg-zinc-800 py-[5vh] flex items-center justify-start flex-col overflow-x-hidden overflow-y-auto">        
         <h1 className=' text-2xl text-zinc-200 font-semibold'>API Products</h1>
         <div className="cards-container w-[84%] grid-cols-4 gap-10 grid  mt-10">
-            {products.map((p,i) =>(
+            {filteredProducts && filteredProducts.map((p,i) =>(
 
 
                 <Link to={`/prddeatils/${p.id}`} key={i} 

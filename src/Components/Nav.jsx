@@ -1,6 +1,19 @@
-import React from 'react'
+import { useContext } from "react";
+import { productContext } from "../utils/Context";
+import { Link, useLocation } from "react-router-dom";
 
 const Nav = () => {
+
+  const [products] = useContext(productContext)
+  
+
+  const color = ()=>{
+    return `rgba(${( Math.random() * 255 ).toFixed()}, ${( Math.random() * 255 ).toFixed()}, ${( Math.random() * 255 ).toFixed()}, 0.9)`
+  }
+
+  let distinct_catagory = products && products.reduce((acc,cv)=>[...acc,cv.category],[]);   //sare items ki category mil gyi in array form
+  distinct_catagory = [...new Set(distinct_catagory)];   //array me se distict ategory nikal li
+
   return (
     <div>
         <div className="nav w-[20vw] h-[100vh] bg-zinc-800/90 text-white flex items-center justify-start flex-col py-[5vh]">
@@ -13,12 +26,17 @@ const Nav = () => {
          
         <h1 className=' text-2xl w-[80%] border-t-[0.7px] border-zinc-500 text-zinc-200 font-semibold'>Categories</h1>
 
-        <ul className='w-[50%] mt-4'>
-          <li className='mb-2'>
-            <span className=' w-[12px] h-[12px] bg-yellow-200 rounded-full inline-block mr-2'></span>Bikinis
-          </li>
+        <div className='w-[50%] h-full mt-4 leading-4 '>
+          {distinct_catagory.map((c,i)=>(            
+            
+            <Link
+            key={i}
+            to={`/?category=${c}`} className='mb-2'>
+            <span style={{backgroundColor:color()}} className=' w-[12px] h-[12px] rounded-full inline-block mr-2'></span>{c} <br /><br />
+          </Link>
 
-        </ul>
+          ))}
+          </div>
 
       </div>
     </div>
