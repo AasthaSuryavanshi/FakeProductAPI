@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { productContext } from '../utils/Context'
 
 const CreatePrd = () => {
+
+    const [products , setproducts] = useContext(productContext)
 
     const [title, settitle] = useState(null)
     const [image, setimage] = useState(null)
@@ -12,10 +15,23 @@ const CreatePrd = () => {
 
     const submitHandler = (e)=>{
         e.preventDefault();
+        if(
+            title.trim().length < 5 ||
+            image.trim().length < 5 ||
+            category.trim().length < 5 ||
+            price.trim().length < 1 ||
+            description.trim().length < 5 
+        ){
+            alert("every input must have at least 4 characters");
+            return
+        }
         const product = {
             title,image,category, price,description
         }
+        setproducts([...products,product]);
+        console.log(products);
         console.log(product);
+
     }
 
   return (
