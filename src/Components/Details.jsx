@@ -1,28 +1,40 @@
 import axios from '../utils/axios';
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import Loadingdetails from './Loadingdetails';
+import { productContext } from '../utils/Context';
 
 const Details = () => {
+    const [products] = useContext(productContext)
     const [product, setproduct] = useState(null)
     const { id } = useParams();
+    const navigate = useNavigate()
 
 
-    const getsingleproduct = async () =>{
-        try {
-            const {data} = await axios.get(`/products/${id}`)
-            console.log(data);
-            setproduct(data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const getsingleproduct = async () =>{
+    //     try {
+    //         const {data} = await axios.get(`/products/${id}`)
+    //         console.log(data);
+    //         setproduct(data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     useEffect(() => {
-      getsingleproduct();
+    //   getsingleproduct();
+    if(products){
+        setproduct(products.filter((p) => p.id == id)[0])
+    }
     
     }, [])
     
+    const deleteHandler = (id)=>{
+        const notdeleteprd = products.filter((p)=> p.id !== id)
+        setproducts(notdeleteprd);
+        localStorage.setItem("products", notdeleteprd)
+        navigate('/')
+    }
 
   return  product ? (
     <div className=' w-[100vw] h-[100vh] bg-zinc-800 flex items-center justify-center'>
@@ -45,6 +57,12 @@ const Details = () => {
                 <button className=' border-2 border-yellow-300 rounded-xl px-4 py-1 text-yellow-500 font-bold shadow-none hover:shadow-lg shadow-transparent hover:shadow-yellow-200'>Rating - {product.rating.rate}</button>
                 <h1 className=' text-blue-500 font-semibold text-sm drop-shadow-none hover:drop-shadow-lg shadow-transparent hover:shadow-blue-300'>{product.rating.count}+ buyers</h1>
                 </span>
+
+                <div className="updates">
+                    <button onClick={()=> deleteHandler(product.id)}>Delete</button>
+                    {/* <button onClick={()=> updateHandler(product.id)}>Update</button> */}
+
+                </div>
             </div>
         </div>
 

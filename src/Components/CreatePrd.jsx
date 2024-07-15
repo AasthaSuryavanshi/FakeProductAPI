@@ -1,15 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { productContext } from '../utils/Context'
+import { nanoid } from 'nanoid'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const CreatePrd = () => {
-
+const navigate = useNavigate()
     const [products , setproducts] = useContext(productContext)
 
-    const [title, settitle] = useState(null)
-    const [image, setimage] = useState(null)
-    const [category, setcategory] = useState(null)
-    const [price, setprice] = useState(null)
-    const [description, setdescription] = useState(null)
+    const [title, settitle] = useState("")
+    const [image, setimage] = useState("")
+    const [category, setcategory] = useState("")
+    const [price, setprice] = useState("")
+    const [description, setdescription] = useState("")
 
 
 
@@ -26,12 +28,12 @@ const CreatePrd = () => {
             return
         }
         const product = {
+            id:nanoid(),
             title,image,category, price,description
         }
         setproducts([...products,product]);
-        console.log(products);
-        console.log(product);
-
+        localStorage.setItem("products", JSON.stringify([...products,product]))
+        navigate('/')
     }
 
   return (
@@ -39,7 +41,7 @@ const CreatePrd = () => {
         <div className="form-container w-[60%] h-[80%] py-[4vh] bg-zinc-800 hover:bg-zinc-700 border-2 text-center border-white  scale-100 hover:scale-[1.2px] transition-all ease-linear rounded-2xl cursor-pointer shadow-none hover:shadow-lg shadow-transparent hover:shadow-white/40">
         <h1 className=' text-xl text-zinc-200 font-semibold'>Create New Product</h1>
 
-        <form action="" method="post" onSubmit={submitHandler} className='flex items-center  justify-start flex-col'>
+        <form action="" method="post" onSubmit={(e)=> {submitHandler(e)}} className='flex items-center  justify-start flex-col'>
             <input 
             type="text"
             placeholder='Enter Title'
@@ -77,9 +79,11 @@ const CreatePrd = () => {
             value={description}>
 
             </textarea>
-            <button type="submit"
+
+            <button type="submit" 
             className=' border-2 border-green-300 rounded-xl px-4 py-1 text-green-500 font-bold shadow-none hover:shadow-md shadow-transparent hover:shadow-green-400'>
-                Add Product</button>
+            Add Product
+            </button>
             
         </form>
         </div>
