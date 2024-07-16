@@ -5,12 +5,11 @@ import Loadingdetails from './Loadingdetails';
 import { productContext } from '../utils/Context';
 
 const Details = () => {
-    const [products] = useContext(productContext)
+    const [products, setproducts] = useContext(productContext)
     const [product, setproduct] = useState(null)
     const { id } = useParams();
     const navigate = useNavigate()
-
-
+    
     // const getsingleproduct = async () =>{
     //     try {
     //         const {data} = await axios.get(`/products/${id}`)
@@ -23,16 +22,15 @@ const Details = () => {
 
     useEffect(() => {
     //   getsingleproduct();
-    if(products){
+    if(!product){
         setproduct(products.filter((p) => p.id == id)[0])
-    }
-    
+    }    
     }, [])
     
     const deleteHandler = (id)=>{
         const notdeleteprd = products.filter((p)=> p.id !== id)
         setproducts(notdeleteprd);
-        localStorage.setItem("products", notdeleteprd)
+        localStorage.setItem("products", JSON.stringify(notdeleteprd))
         navigate('/')
     }
 
@@ -58,9 +56,11 @@ const Details = () => {
                 <h1 className=' text-blue-500 font-semibold text-sm drop-shadow-none hover:drop-shadow-lg shadow-transparent hover:shadow-blue-300'>{product.rating.count}+ buyers</h1>
                 </span>
 
-                <div className="updates">
-                    <button onClick={()=> deleteHandler(product.id)}>Delete</button>
-                    {/* <button onClick={()=> updateHandler(product.id)}>Update</button> */}
+                <div className="updates mt-3">
+                    <button
+                    className='border-2 border-red-300 rounded-xl px-4 py-1 text-red-500 font-bold '
+                    onClick={()=> deleteHandler(product.id)}>Delete</button>
+                    <button onClick={()=> editHandler(product.id)}>Update</button>
 
                 </div>
             </div>
