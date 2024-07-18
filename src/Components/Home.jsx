@@ -52,7 +52,8 @@ const Home = () => {
                 <div
                 className="img-container w-[75%] h-[90%] bg-contain bg-no-repeat bg-center"
                 style={{
-                    backgroundImage:`url(${p.image})`
+                    backgroundImage:`url(${p.image})`,
+                    objectFit:'cover'
                 }}>
                 </div>
 

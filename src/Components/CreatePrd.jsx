@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { productContext } from '../utils/Context'
 import { nanoid } from 'nanoid'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const CreatePrd = () => {
 const navigate = useNavigate()
@@ -44,7 +45,10 @@ const navigate = useNavigate()
         localStorage.setItem("products", JSON.stringify([...products,product]))
         console.log(product);
         navigate('/')
-    }
+        toast.success("Product Added Successfully!",{
+            theme: "dark"
+        })
+    }       
 
   return (
     <div className=' w-[100vw] h-[100vh] bg-zinc-800 flex items-center justify-center'>

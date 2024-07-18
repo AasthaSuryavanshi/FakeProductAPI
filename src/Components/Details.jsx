@@ -1,8 +1,9 @@
 import axios from '../utils/axios';
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Loadingdetails from './Loadingdetails';
 import { productContext } from '../utils/Context';
+import { toast } from 'react-toastify';
 
 const Details = () => {
     const [products, setproducts] = useContext(productContext)
@@ -32,6 +33,10 @@ const Details = () => {
         setproducts(notdeleteprd);
         localStorage.setItem("products", JSON.stringify(notdeleteprd))
         navigate('/')
+        toast.success("Product deleted successfully",{
+            theme: "dark",
+
+        })
     }
 
   return  product ? (
@@ -60,7 +65,10 @@ const Details = () => {
                     <button
                     className='border-2 border-red-300 rounded-xl px-4 py-1 text-red-500 font-bold '
                     onClick={()=> deleteHandler(product.id)}>Delete</button>
-                    <button onClick={()=> editHandler(product.id)}>Update</button>
+
+                    <Link to={`/edit/${product.id}`}
+                    className='border-2 ml-6 border-green-400 rounded-xl px-4 py-1 text-green-400 font-bold '
+                    onClick={()=> editHandler(product.id)}>Edit</Link>
 
                 </div>
             </div>
